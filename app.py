@@ -13,7 +13,7 @@ scaler = joblib.load('scaler.pkl')
 le = joblib.load('label_encoder.pkl')
 
 # Load the dataset
-file_path = 'Fish.csv'
+file_path = r'C:\Users\dixit\DURHAM\ArtificialIntelligence\Semester 2\AIDI 2004\Week 12\Lab4\data\Fish.csv'
 fish_data = pd.read_csv(file_path)
 
 @app.route('/predict', methods=['POST'])
