@@ -1,8 +1,7 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, render_template
 import joblib
 import numpy as np
 import pandas as pd
-import os
 
 app = Flask(__name__)
 
@@ -16,6 +15,14 @@ le = joblib.load('label_encoder.pkl')
 # Load the dataset
 file_path = r'C:\Users\dixit\DURHAM\ArtificialIntelligence\Semester 2\AIDI 2004\Week 12\Lab4\data\Fish.csv'
 fish_data = pd.read_csv(file_path)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/training_data.html')
+def training_data():
+    return render_template('training_data.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
