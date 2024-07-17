@@ -4,42 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Training Dataset Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 1em 0;
+            text-align: center;
+        }
+        nav a {
+            color: #ecf0f1;
+            margin: 0 1em;
+            text-decoration: none;
+        }
+        main {
+            max-width: 1200px;
+            margin: 2em auto;
+            padding: 2em;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            margin-top: 1em;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Training Dataset Information</h1>
-    <nav>
-        <a href="/">Home</a>
-        <a href="training_data.html">Training Dataset Information</a>
-    </nav>
-    <h2>Descriptive Statistics</h2>
-    <div id="descriptiveStats"></div>
-    <h2>Box Plot of Weight</h2>
-    <img src="box_plot_weight.png" alt="Box Plot of Weight">
-    <h2>Box Plots of All Variables Except Weight</h2>
-    <img src="box_plots_other.png" alt="Box Plots of All Variables Except Weight">
-    <h2>Histograms</h2>
-    <img src="histograms.png" alt="Histograms of All Variables">
-
+    <header>
+        <h1>Training Dataset Information</h1>
+        <nav>
+            <a href="/">Home</a>
+            <a href="training_data.html">Training Dataset Information</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Descriptive Statistics</h2>
+        <div id="descriptiveStats"></div>
+        <h2>Box Plot of Weight</h2>
+        <img src="box_plot_weight.png" alt="Box Plot of Weight">
+        <h2>Box Plots of All Variables Except Weight</h2>
+        <img src="box_plots_other.png" alt="Box Plots of All Features Except Weight">
+        <h2>Histograms</h2>
+        <img src="histograms.png" alt="Histograms of All Features">
+    </main>
     <script>
         fetch('/descriptive_stats')
             .then(response => response.json())
             .then(data => {
                 const statsDiv = document.getElementById('descriptiveStats');
-                let html = '<table border="1"><tr>';
-                for (const key in data) {
+                const keys = Object.keys(data);
+                const stats = Object.keys(data[keys[0]]);
+                let html = '<table border="1"><thead><tr><th>Statistic</th>';
+                keys.forEach(key => {
                     html += `<th>${key}</th>`;
-                }
-                html += '</tr>';
-                for (let i = 0; i < Object.keys(data[Object.keys(data)[0]]).length; i++) {
-                    html += '<tr>';
-                    for (const key in data) {
-                        html += `<td>${data[key][Object.keys(data[key])[i]]}</td>`;
-                    }
+                });
+                html += '</tr></thead><tbody>';
+                stats.forEach(stat => {
+                    html += `<tr><td>${stat}</td>`;
+                    keys.forEach(key => {
+                        html += `<td>${Number(data[key][stat]).toFixed(3)}</td>`;
+                    });
                     html += '</tr>';
-                }
-                html += '</table>';
+                });
+                html += '</tbody></table>';
                 statsDiv.innerHTML = html;
             });
-    </script>
+    </script>    
 </body>
 </html>
