@@ -76,7 +76,7 @@
             <input type="number" id="Width" name="Width" required>
             <button type="button" onclick="getPrediction()">Predict</button>
         </form>
-        <h2>Predicted Weight: <span id="predictedWeight"></span></h2>
+        <h2>Predicted Weight: <span id="predictedWeight"></span> Kgs</h2>
         <h2>Predicted Species (Logistic Regression): <span id="predictedSpeciesLogistic"></span></h2>
         <h2>Predicted Species (Random Forest): <span id="predictedSpeciesRF"></span></h2>
     </main>
@@ -95,7 +95,7 @@
             });
 
             const result = await response.json();
-            document.getElementById('predictedWeight').textContent = result.predicted_weight;
+            document.getElementById('predictedWeight').textContent = result.predicted_weight.toFixed(2);
             document.getElementById('predictedSpeciesLogistic').textContent = result.predicted_species_logistic;
             document.getElementById('predictedSpeciesRF').textContent = result.predicted_species_rf;
         }
