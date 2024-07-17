@@ -1,0 +1,6 @@
+echo "fishpred/" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo "*.pyc" >> .gitignore
+echo "*.pkl" >> .gitignore
+echo "*.png" >> .gitignore
+echo "instance/" >> .gitignore

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fish Market Predictions</title>
+</head>
+<body>
+    <h1>Fish Market Predictions</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="training_data.html">Training Dataset Information</a>
+    </nav>
+    <form id="predictionForm">
+        <label for="Length1">Length1:</label>
+        <input type="number" id="Length1" name="Length1" required><br><br>
+        <label for="Length2">Length2:</label>
+        <input type="number" id="Length2" name="Length2" required><br><br>
+        <label for="Length3">Length3:</label>
+        <input type="number" id="Length3" name="Length3" required><br><br>
+        <label for="Height">Height:</label>
+        <input type="number" id="Height" name="Height" required><br><br>
+        <label for="Width">Width:</label>
+        <input type="number" id="Width" name="Width" required><br><br>
+        <button type="button" onclick="getPrediction()">Predict</button>
+    </form>
+    <h2>Predicted Weight: <span id="predictedWeight"></span></h2>
+    <h2>Predicted Species (Logistic Regression): <span id="predictedSpeciesLogistic"></span></h2>
+    <h2>Predicted Species (Random Forest): <span id="predictedSpeciesRF"></span></h2>
+
+    <script>
+        async function getPrediction() {
+            const form = document.getElementById('predictionForm');
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            document.getElementById('predictedWeight').textContent = result.predicted_weight;
+            document.getElementById('predictedSpeciesLogistic').textContent = result.predicted_species_logistic;
+            document.getElementById('predictedSpeciesRF').textContent = result.predicted_species_rf;
+        }
+    </script>
+</body>
+</html>

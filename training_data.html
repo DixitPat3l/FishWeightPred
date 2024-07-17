@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Dataset Information</title>
+</head>
+<body>
+    <h1>Training Dataset Information</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="training_data.html">Training Dataset Information</a>
+    </nav>
+    <h2>Descriptive Statistics</h2>
+    <div id="descriptiveStats"></div>
+    <h2>Box Plot of Weight</h2>
+    <img src="box_plot_weight.png" alt="Box Plot of Weight">
+    <h2>Box Plots of All Variables Except Weight</h2>
+    <img src="box_plots_other.png" alt="Box Plots of All Variables Except Weight">
+    <h2>Histograms</h2>
+    <img src="histograms.png" alt="Histograms of All Variables">
+
+    <script>
+        fetch('/descriptive_stats')
+            .then(response => response.json())
+            .then(data => {
+                const statsDiv = document.getElementById('descriptiveStats');
+                let html = '<table border="1"><tr>';
+                for (const key in data) {
+                    html += `<th>${key}</th>`;
+                }
+                html += '</tr>';
+                for (let i = 0; i < Object.keys(data[Object.keys(data)[0]]).length; i++) {
+                    html += '<tr>';
+                    for (const key in data) {
+                        html += `<td>${data[key][Object.keys(data[key])[i]]}</td>`;
+                    }
+                    html += '</tr>';
+                }
+                html += '</table>';
+                statsDiv.innerHTML = html;
+            });
+    </script>
+</body>
+</html>
