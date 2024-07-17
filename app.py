@@ -1,21 +1,23 @@
+import os
 from flask import Flask, request, jsonify, send_file, render_template
 import joblib
 import numpy as np
 import pandas as pd
-import os
 
 app = Flask(__name__)
 
-# Load the models, scaler, and label encoder
-reg_model = joblib.load('linear_regression_model.pkl')
-log_reg_model = joblib.load('logistic_regression_model.pkl')
-clf_model = joblib.load('random_forest_model.pkl')
-scaler = joblib.load('scaler.pkl')
-le = joblib.load('label_encoder.pkl')
+# Define the path to the CSV file relative to the current directory
+file_path = os.path.join(os.path.dirname(__file__), 'data', 'Fish.csv')
 
 # Load the dataset
-file_path = r'C:\Users\dixit\DURHAM\ArtificialIntelligence\Semester 2\AIDI 2004\Week 12\Lab4\data\Fish.csv'
 fish_data = pd.read_csv(file_path)
+
+# Load the models, scaler, and label encoder
+reg_model = joblib.load(os.path.join(os.path.dirname(__file__), 'linear_regression_model.pkl'))
+log_reg_model = joblib.load(os.path.join(os.path.dirname(__file__), 'logistic_regression_model.pkl'))
+clf_model = joblib.load(os.path.join(os.path.dirname(__file__), 'random_forest_model.pkl'))
+scaler = joblib.load(os.path.join(os.path.dirname(__file__), 'scaler.pkl'))
+le = joblib.load(os.path.join(os.path.dirname(__file__), 'label_encoder.pkl'))
 
 @app.route('/')
 def index():
@@ -67,4 +69,4 @@ def histograms():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
